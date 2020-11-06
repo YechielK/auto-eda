@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>Column headers were made lower case and spaces removed</p>
+<p>Nulls: {{ nulls }}</p>
+<p>Duplicates: {{ duplicates }}</p>
+<p>Outliers: {{ outliers }}</p>
+<!-- {{ before_shape }}
+{{ after_shape }} -->
+<a href="/getPlotCSV">Click to download </a> <p>({{ memory }} KB)</p>
+{% endblock %}
+
+
