@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>Intercept: {{ intercept }}</p>
+<p>Coeffecient: {{coef_name}} {{ coef_num }}</p>
+<p>Formula is: {{ intercept }} x{{coef_num[0]}}</p>
+<p>R squared: {{ r_squared }}</p>
+<p>Mean absolute error: {{ mae }}</p>
+
+{% endblock %}

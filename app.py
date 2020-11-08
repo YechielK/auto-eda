@@ -5,6 +5,7 @@ import numpy as numpy
 import csv
 import os
 import cleaner
+import linreg
 
 
 
@@ -12,7 +13,7 @@ app = Flask(__name__)
 
 
 x = 'this is x'
-
+y = 'this is y'
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
@@ -20,9 +21,11 @@ def index():
 @app.route('/data', methods=['GET', 'POST'])
 def data():
     global x
+    global y
     if request.method == 'POST':
 
         file = request.files['file']
+        y = request.form['t']
         data = pd.read_csv(file)
         data = cleaner.clean(data)
         x = data
@@ -35,7 +38,7 @@ def data():
             outliers=g.outliers,
             memory=g.memory)
 
-@app.route("/getPlotCSV", methods=['GET', 'POST'])
+@app.route('/getPlotCSV', methods=['GET', 'POST'])
 def getPlotCSV():
     global x
 
@@ -44,6 +47,23 @@ def getPlotCSV():
         mimetype="text/csv",
         headers={"Content-disposition":
                  "attachment; filename=myplot.csv"})
+
+@app.route('/linearRegression', methods=['GET'])
+def linearRegression():
+    global x
+    global y
+
+    linreg_model = linreg.linreg(x,y)
+    print(linreg_model.coef_)
+    print(linreg_model.intercept_)
+
+    return render_template(
+            'linearreg.html',
+            intercept=linreg_model.intercept_,
+            coef_name=g.selected_features,
+            coef_num=linreg_model.coef_,
+            r_squared=g.r_squared,
+            mae=g.mae)
 
 
 if __name__ == '__main__':

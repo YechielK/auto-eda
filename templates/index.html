@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 <form class="" action="data" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" value=""><br>
-    <input type="submit" name="" value="Submit">
+    <input type="file" name="file" value="Choose csv"><br>
+    <p>Choose target variable (input in lowercase and '_' for spaces</p>
+    <input type="text" name="t" ><br>
+    <input type="submit" name="" value="Submit data">
+
 </form>
 {% endblock %}
