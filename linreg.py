@@ -9,8 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 def linreg(df, target):
     selected_features = list(df.corr()[target].abs().sort_values(ascending=False)[1:2].index)
