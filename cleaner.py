@@ -64,3 +64,6 @@ def remove_outliers(df):
     outliers = before_rows - df.shape[0]
     g.outliers = outliers
     return df
+
+def fix_target(target):
+    return target.lower().replace(' ', '_')

@@ -12,8 +12,9 @@ from sklearn.model_selection import train_test_split
 
 
 def linreg(df, target):
+    print('tunger', target)
     selected_features = list(df.corr()[target].abs().sort_values(ascending=False)[1:2].index)
-    g.selected_features = selected_features
+    g.selected_features = selected_features[0]
 
     X = df[selected_features].values
     y = df[target].values
