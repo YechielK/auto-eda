@@ -7,12 +7,9 @@
 {% for table in tables %}
             {{ table|safe }}
 {% endfor %}
-<!-- {{ before_shape }}
-{{ after_shape }} -->
+
 <a href="/getPlotCSV">Click to download cleaned data </a> <p>({{ memory }} KB)</p>
 <a href="/linearRegression">Click to perform linear regression </a>
-
-
 
 {% endblock %}
 
