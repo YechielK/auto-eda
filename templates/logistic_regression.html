@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% if get_target %}
+<form action="/linearRegression" method="post" enctype="multipart/form-data">
+    <!-- <input type="file" name="file" value="Choose csv"><br> -->
+    <input type="text" name="get_target" value='if need target'><br>
+    <input type="submit" name="" value="Submit data">
+</form>
+{% endif %}
+
+{% if not intercept and not get_target %}
+
+<form action="/linearRegression" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" value="Choose csv"><br>
+    <input type="text" name="target"><br>
+    <input type="submit" name="" value="Submit data">
+</form>
+{% endif %}
+{% if intercept %}
+
+<!-- <p>Intercept: {{ intercept }}</p>
+<p>Coeffecient: {{coef_name}} {{ coef_num }}</p> -->
+<p>Formula is: y = {{ intercept }} {{ eq }}</p>
+<p>R squared: {{ r_squared }}</p>
+<p>Mean absolute error: {{ mae }}</p>
+{% endif %}
+{% endblock %}

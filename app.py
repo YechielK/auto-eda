@@ -10,20 +10,21 @@ import pickle
 
 
 app = Flask(__name__)
+
 app.config["SECRET_KEY"] = "open secret"
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-
         return render_template('index.html')
 
-    return 'diddnt owrk0'
 
 
+# Explatory Data Analysis
 @app.route('/eda', methods=['GET', 'POST'])
 def eda():
+
     if request.method == 'GET':
         return render_template('eda.html')
 
@@ -42,9 +43,9 @@ def eda():
             outliers=g.outliers,
             memory=g.memory)
 
+# Returns cleaned csv
 @app.route('/getPlotCSV', methods=['GET', 'POST'])
 def getPlotCSV():
-
     data = pd.read_pickle(session['filename'])
     os.remove(session['filename'])
     return Response(
@@ -53,47 +54,31 @@ def getPlotCSV():
         headers={"Content-disposition":
                  "attachment; filename=myplot.csv"})
 
+
+
+# 
 @app.route('/linearRegression', methods=['GET','POST'])
 def linearRegression():
     
-    if request.method == 'POST' and 'file' in request.files and 'target' in request.form:
-        file = request.files['file']
+    if request.method == 'POST': 
+        # if user presses submit after uploading dataset and target
+        if 'file' in request.files and 'target' in request.form:
+            file = request.files['file']
+            session['filename'] = file.filename
+            data = pd.read_csv(file)
+            data = cleaner.clean(data)
+            session['target'] = request.form['target']
+            session['target'] = cleaner.fix_target(session['target'])
 
-        session['filename'] = file.filename
-
-        data = pd.read_csv(file)
-
-
-        data = cleaner.clean(data)
-        session['target'] = request.form['target']
-        session['target'] = cleaner.fix_target(session['target'])
-
+        # if user only needs to uplaod target and presses submit
+        elif 'get_target' in request.form:
+    
+            session['target'] = request.form['get_target']
+            session['target'] = cleaner.fix_target(session['target'])
+            data = pd.read_pickle(session['filename'])
+        
+        # perform linear regression
         linreg_model = linreg.linreg(data,session['target'])
-        ans = ''
-        eq = g.selected_features + ' * ' + str(linreg_model.coef_[0])
-
-        if np.sign(linreg_model.coef_) > 0:
-            ans = '+ ' + eq
-        else:
-            ans = '- ' + eq
-
-        return render_template(
-        'linearreg.html',
-        intercept=linreg_model.intercept_,
-        coef_name=g.selected_features,
-        coef_num=linreg_model.coef_,
-        r_squared=g.r_squared,
-        mae=g.mae,
-        eq=ans)
-
-    if request.method == 'POST' and 'get_target' in request.form:
-
-        session['target'] = request.form['get_target']
-        session['target'] = cleaner.fix_target(session['target'])
-        data = pd.read_pickle(session['filename'])
-        linreg_model = linreg.linreg(data,session['target'])
-
-            
         ans = ''
         eq = g.selected_features + ' * ' + str(linreg_model.coef_[0])
 
@@ -111,14 +96,25 @@ def linearRegression():
                 mae=g.mae,
                 eq=ans)
 
+    # if user needs to uplaod csv and target
     if request.method == 'GET':
         if not os.path.isfile(session['filename']): 
             return render_template('linearreg.html')
         else:
-            print('from get')
+            # if user only needs to upload target
             return render_template('linearreg.html', get_target=True)
 
-       
+@app.route('/logistic_regression', methods=['GET', 'POST'])
+def logistic_regression():
+
+    # if user needs to uplaod csv and target
+    if request.method == 'GET':
+        if not os.path.isfile(session['filename']): 
+            return render_template('linearreg.html')
+        else:
+            # if user only needs to upload target
+            return render_template('linearreg.html', get_target=True)
+
 
 
 if __name__ == '__main__':
