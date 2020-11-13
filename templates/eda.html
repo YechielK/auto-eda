@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+{% if not tables %}
+<form action="/eda" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" value="Choose csv"><br>
+    <input type="submit" name="" value="Submit data">
+</form>
+{% endif %}
+
+
+{% if tables %}
+
+<p>Column headers were made lower case and spaces removed</p>
+<p>Nulls: {{ nulls }}</p>
+<p>Duplicates: {{ duplicates }}</p>
+<p>Outliers: {{ outliers }}</p>
+{% for table in tables %}
+            {{ table|safe }}
+{% endfor %}
+
+<a href="/getPlotCSV">Click to download cleaned data </a> <p>({{ memory }} KB)</p>
+<a href="/linearRegression">Click to perform linear regression </a>
+
+{% endif %}
+
+
+{% endblock %}

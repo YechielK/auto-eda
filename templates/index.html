@@ -1,9 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="data" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" value="Choose csv"><br>
-    <p>Choose target variable</p>
-    <input type="text" name="target" ><br>
-    <input type="submit" name="" value="Submit data">
-</form>
+
+<a href="/eda" class="btn btn-secondary my-4">EDA</a>
+<a href="/linearRegression" class="btn btn-secondary my-4">Linear Regression</a>
+
 {% endblock %}
