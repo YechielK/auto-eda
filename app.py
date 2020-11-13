@@ -58,34 +58,6 @@ def eda():
             outliers=g.outliers,
             memory=g.memory)
 
-
-
-    
-@app.route('/data', methods=['GET', 'POST'])
-def data():
-
-    if request.method == 'POST':
-
-        session['target'] = request.form['target']
-        session['target'] = cleaner.fix_target(session['target'])
-        print('shmarget', session['target'])
-        
-
-        data = pd.read_pickle(session['filename'])
-        os.remove(session['filename'])
-        data = cleaner.clean(data)
-
-        data.to_pickle('cleaned_' + session['filename'])
-
-        return render_template(
-            'data.html',
-            tables=[data.head().to_html()],
-            nulls=g.nulls,
-            duplicates=g.duplicates,
-            outliers=g.outliers,
-            memory=g.memory)
-    return 'get arror'
-
 @app.route('/getPlotCSV', methods=['GET', 'POST'])
 def getPlotCSV():
 
