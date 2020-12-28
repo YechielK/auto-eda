@@ -36,9 +36,9 @@ def calculate(a, bga, bgna):
 
 
 
-    print(values)
+    # print(values)
 
-    return 1
+    return values
 
 
 

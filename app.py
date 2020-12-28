@@ -156,15 +156,19 @@ def bayesian_calculator():
 @app.route('/calculate', methods=['GET', 'POST'])
 def calculate():
     if request.method == 'GET':
+        a = request.args.get("name_a")
+        b = request.args.get("name_b")
         x = request.args.get("a")
         y = request.args.get("bga")
         z = request.args.get("bgna")
-        bayesian.calculate(x,y,z)
-        return render_template('bayes.html')
-    if request.method == 'POST':
-        print("tester posr")
-        # bayesian.calculate(request.args.get("a"))
-        return render_template('bayes.html')
+        
+        values = bayesian.calculate(x,y,z)
+
+        return render_template('bayes.html', v=values, a=a, b=b)
+    # if request.method == 'POST':
+    #     print("tester posr")
+    #     # bayesian.calculate(request.args.get("a"))
+    #     return render_template('bayes.html', foobar=values)
 
 
 if __name__ == '__main__':

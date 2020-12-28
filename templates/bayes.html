@@ -1,12 +1,60 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<form action="/calculate">
-    <input type="text" placeholder="P(S)" name="a" id="a"/>
-    <input type="text" placeholder="P(P|S)" name="bga" id="bga"/>
-    <input type="text" placeholder="P(P|S`)" name="bgna" id="bgna"/>
+<form action="/calculate">    
+    <input type="text" placeholder="A" name="name_a" id="name_a"/>
+    <input type="text" placeholder="B" name="name_b" id="name_b"/>
+    <input type="text" placeholder="P(A)" name="a" id="a"/>
+    <input type="text" placeholder="P(B|A)" name="bga" id="bga"/>
+    <input type="text" placeholder="P(B|A`)" name="bgna" id="bgna"/>
     <button type="submit">Calcualte</button>
 </form>
+
+
+
+
+{% if v %}
+
+<ol>
+    <!-- initial -->
+    <li>P({{ a }}) = {{ v['a'] }}</li>
+    <li>P({{ b }}|{{ a }}) = {{ v['b_given_a'] }}</li>
+    <li>P({{ b }}|{{ a }}`) = {{ v['b_given_not_a'] }}</li>
+    <!-- inverse -->
+    <li>P({{ a }}`) = 1 - P({{ a }}`) = {{ v['not_a'] }}</li>
+    <li>P({{ b }}`|{{ a }}) = 1 - P({{ b }}|{{ a }}) =  {{ v['not_b_given_a'] }}</li>
+    <li>P({{ b }}`|{{ a }}`) = 1 - P({{ b }}|{{ a }}`) =  {{ v['not_b_given_not_a'] }}</li>
+    <!-- and  -->
+    <li>P({{ b }}|{{ a }}) *   P({{ a }})  = P({{ b }} and {{ a }})  = {{ v['b_and_a'] }}</li>
+    <li>P({{ b }}`|{{ a }}) *  P({{ a }})  = P({{ b }}` and {{ a }}) = {{ v['not_b_and_a'] }}</li>
+    <li>P({{ b }}|{{ a }}`) *  P({{ a }}`) = P({{ b }} and {{ a }}`) = {{ v['b_and_not_a'] }}</li>
+    <li>P({{ b }}`|{{ a }}`) * P({{ a }}`) = P({{ b }}` and {{ a }}`)= {{ v['not_b_and_not_a'] }}</li>
+
+    <!-- b -->
+    <li>P({{ b }} = P({{ b }}|{{ a }}) *   P({{ a }}) + P({{ b }}|{{ a }}`) *  P({{ a }}`) = P({{ b }} and {{ a }}) + P({{ b }} and {{ a }}`) = {{ v['b']}} </li>
+
+    <!-- final values -->
+    <li>P({{ a }}|{{ b }}) = P({{ b }} and {{ a }}) / P({{ b }})     = {{ v['a_given_b'] }}</li>
+    <li>P({{ a }}|{{ b }}`) = P({{ b }}` and {{ a }}) / P({{ b }}`)  = {{ v['a_given_not_b'] }}</li>
+    <li>P({{ a }}`|{{ b }}) = P({{ b }} and {{ a }}`) / P({{ b }})   = {{ v['not_a_given_b'] }}</li>
+    <li>P({{ a }}`|{{ b }}`) = P({{ b }}` and {{ a }}`) / P({{ b }}`)= {{ v['not_a_given_not_b'] }}</li>
+
+
+</ol>
+
+
+
+
+
+
+
+
+{% for key, value in v.items() %}
+{{ key }} : {{ value }}
+{% endfor %}
+{% endif %}
+
+
 
 
 {% endblock %}
