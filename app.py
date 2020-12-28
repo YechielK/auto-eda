@@ -14,7 +14,14 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "open secret"
 
 
+
+
 @app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'GET':
+        return render_template('home.html')
+
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
         return render_template('index.html')
@@ -106,6 +113,28 @@ def linearRegression():
 
 @app.route('/logistic_regression', methods=['GET', 'POST'])
 def logistic_regression():
+
+    if request.method == 'POST': 
+    # if user presses submit after uploading dataset and target
+        if 'file' in request.files and 'target' in request.form:
+            file = request.files['file']
+            session['filename'] = file.filename
+            data = pd.read_csv(file)
+            data = cleaner.clean(data)
+            session['target'] = request.form['target']
+            session['target'] = cleaner.fix_target(session['target'])
+
+        # if user only needs to uplaod target and presses submit
+        elif 'get_target' in request.form:
+
+            session['target'] = request.form['get_target']
+            session['target'] = cleaner.fix_target(session['target'])
+            data = pd.read_pickle(session['filename'])
+        
+        # perform linear regression
+        logreg_model = logreg.logreg(data,session['target'])
+        return render_template('linearreg.html')
+
 
     # if user needs to uplaod csv and target
     if request.method == 'GET':
