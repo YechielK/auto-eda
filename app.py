@@ -7,6 +7,7 @@ import os
 import cleaner
 import linreg
 import pickle
+import bayesian
 
 
 app = Flask(__name__)
@@ -144,6 +145,26 @@ def logistic_regression():
             # if user only needs to upload target
             return render_template('linearreg.html', get_target=True)
 
+
+@app.route('/bayesian_calculator', methods=['GET', 'POST'])
+def bayesian_calculator():
+    if request.method == 'GET':
+        return render_template('bayes.html')
+
+
+
+@app.route('/calculate', methods=['GET', 'POST'])
+def calculate():
+    if request.method == 'GET':
+        x = request.args.get("a")
+        y = request.args.get("bga")
+        z = request.args.get("bgna")
+        bayesian.calculate(x,y,z)
+        return render_template('bayes.html')
+    if request.method == 'POST':
+        print("tester posr")
+        # bayesian.calculate(request.args.get("a"))
+        return render_template('bayes.html')
 
 
 if __name__ == '__main__':

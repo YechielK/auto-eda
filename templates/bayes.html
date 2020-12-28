@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form action="/calculate">
+    <input type="text" placeholder="P(S)" name="a" id="a"/>
+    <input type="text" placeholder="P(P|S)" name="bga" id="bga"/>
+    <input type="text" placeholder="P(P|S`)" name="bgna" id="bgna"/>
+    <button type="submit">Calcualte</button>
+</form>
+
+
+{% endblock %}
