@@ -36,7 +36,9 @@ def calculate(a, bga, bgna):
 
 
 
-    # print(values)
+    print(values)
+    values= {k: round(v, 3) for k,v in values.items()}
+    # print(fixed)
 
     return values
 

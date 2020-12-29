@@ -102,8 +102,11 @@ function draw_square() {
     ctx.lineTo(x + (length * {{ v['a'] }})/2, y- (length/10))
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ a }}) = P({{ b }}|{{ a }}) + P({{ b }}`|{{ a }})", x + (length * {{ v['a'] }})/2, y- (length/10));
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['a'] }}", x + (length * {{ v['a'] }})/2 + c.width/18, y- (length/10) + c.width/36);
 
 
 
@@ -118,8 +121,11 @@ function draw_square() {
     ctx.lineTo(x + (length * {{ v['a'] }})/2 + (length)/2, y- (length/10))
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ a }}`) = P({{ b }}|{{ a }}`) + P({{ b }}`|{{ a }}`)", x + (length * {{ v['a'] }})/2 + (length)/2, y- (length/10));
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['not_a'] }}", x + (length * {{ v['a'] }})/2 + (length)/2 + c.width/18, y- (length/10) + c.width/36);
 
 
 
@@ -134,8 +140,11 @@ function draw_square() {
     ctx.lineTo(x + length + (length/10),y +  (length * {{ v['b_given_not_a'] }})/2);
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}|{{ a }}`)", x + length + (length/10), y +  (length * {{ v['b_given_not_a'] }})/2);
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['b_given_not_a']}}", x + length + (length/10), y +  (length * {{ v['b_given_not_a'] }})/2 + c.width/36);
 
         
 
@@ -150,8 +159,11 @@ function draw_square() {
     ctx.lineTo(x + length + (length/10),y + (length * ({{ v['b_given_not_a'] }} + {{ v['not_b_given_not_a']}}/2)) );
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}`|{{ a }}`)", x +  length + (length/10),y + (length * ({{ v['b_given_not_a'] }} + {{ v['not_b_given_not_a']}}/2)) );
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['not_b_given_not_a'] }}", x +  length + (length/10),y + (length * ({{ v['b_given_not_a'] }} + {{ v['not_b_given_not_a']}}/2)) + c.width/36 );
 
     // P(B|A)
     ctx.beginPath();
@@ -164,8 +176,11 @@ function draw_square() {
     ctx.lineTo(x - (length/10),y+ (length * {{ v['b_given_a'] }})/2);
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}|{{ a }})", x - (length/5),y+ (length * {{ v['b_given_a'] }})/2);
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['b_given_a'] }}", x - (length/5),y+ (length * {{ v['b_given_a'] }})/2 + c.width/36);
     
     
     // P(B`|A)
@@ -179,8 +194,11 @@ function draw_square() {
     ctx.lineTo(x - (length)/10,y+ (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)) );
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}`|{{ a }})",x - (length)/5, y+ (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)) );
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['not_b_given_a']}}",x - (length)/5, y+ (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)) +c.width/36 );
 
     // P(B^A)
     ctx.beginPath();
@@ -188,8 +206,11 @@ function draw_square() {
     ctx.lineTo(x - (length/10),y- (length/10));
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}^{{ a }})", x - (length/5),y- (length/10));
+
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['b_and_a'] }}", x - (length/5),y- (length/10) + c.width/36);
 
     // P(B`^A)
     ctx.beginPath();
@@ -197,9 +218,13 @@ function draw_square() {
     ctx.lineTo(x - (length/10), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)));
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}`^{{ a }})", x - (length/5), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)));
 
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['not_b_and_a']}}", x - (length/5), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)) + c.width/36);
+
+    
 
     // P(B^A`)
     ctx.beginPath();
@@ -207,28 +232,35 @@ function draw_square() {
     ctx.lineTo(x + length + (length/10),y- (length/10));
     ctx.stroke();
 
-    ctx.font = "15px Arial";
+    ctx.font = c.width/48  + "px Arial";
     ctx.fillText("P({{ b }}^{{ a }}`)", x + length + (length/10),y- (length/10));
 
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['b_and_not_a']}}", x + length + (length/10),y- (length/10) + c.width/36);
 
-    // P(B`^A)
+
+
+    // P(B`^A`)
     ctx.beginPath();
     ctx.moveTo(x + length, y + length);
     ctx.lineTo(x + length + (length/10), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)));
     ctx.stroke();
 
-    ctx.font = "15px Arial";
-    ctx.fillText("P({{ b }}`^{{ a }})", x + length + (length/10), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)));
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("P({{ b }}`^{{ a }}`)", x + length + (length/10), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)));
+    
+    ctx.font = c.width/48  + "px Arial";
+    ctx.fillText("{{ v['not_b_and_not_a'] }}", x + length + (length/10), y + (length/10) + (length * ({{ v['b_given_a'] }} + {{ v['not_b_given_a']}}/2)) + c.width/36);
 
 
     // circles
-    // for (let i = length/(2 * m); i < length; i+=length/(1 * m)) {
-    //     for (let j = length/(2 * m); j < length; j+=length/(1 * m)) {
-    //         ctx.beginPath();
-    //         ctx.arc(j, i, length/(2 * m) * circle_size, 0, 2 * Math.PI);
-    //         ctx.stroke();
-    //     }
-    // }
+    for (let i = x + length/(2 * m); i <x + length; i+=length/(1 * m)) {
+        for (let j = y + length/(2 * m); j <y + length; j+=length/(1 * m)) {
+            ctx.beginPath();
+            ctx.arc(j, i, length/(2 * m) * circle_size, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+    }
     }   
 </script> 
 
