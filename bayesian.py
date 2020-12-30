@@ -28,7 +28,6 @@ def calculate(a, bga, bgna):
     values['b'] = values['b_given_a'] * values['a'] + values['b_given_not_a'] * values['not_a']
     inverse('b', values)
 
-
     values['a_given_b'] = values['b_and_a'] / values['b']
     values['not_a_given_b'] = values['b_and_not_a'] / values['b']
     values['a_given_not_b'] = values['not_b_and_a'] / values['not_b']
@@ -36,8 +35,8 @@ def calculate(a, bga, bgna):
 
 
 
-    print(values)
-    values= {k: round(v, 3) for k,v in values.items()}
+    # print(values)
+    values = {k: round(v, 3) for k,v in values.items()}
     # print(fixed)
 
     return values
