@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<div style="position: fixed; padding: 0; margin: 0;">
 <form action="/calculate">    
     <input type="text" placeholder="A" name="name_a" id="name_a"/>
     <input type="text" placeholder="B" name="name_b" id="name_b"/>
@@ -11,15 +12,18 @@
 </form>
 
 {% if v %}
-<canvas id="myCanvas" width="720" height="720" style="border:1px solid #d3d3d3;" ></canvas>
+<canvas id="myCanvas" width="720" height="720" style="border:1px solid #d3d3d3;  display: inline-block; float: left; " ></canvas>
 
-<script src="/static/scripts.js" type="text/javascript"></script>
+<script src="/static/bayes.js" type="text/javascript"></script>
 <script> draw_square({{ v|tojson }}, '{{ a }}', '{{ b }}');</script>
-
+<script>var data = canvas.toDataURL();
+    var prev = window.location.href;
+    window.location.href = data.replace("image/png", "image/octet-stream");
+    window.location.href = prev;</script>
 <!-- <button onclick="draw_circle()">Circle</button>
 <button onclick="draw_square()">Square</button> -->
 
-<ol>
+<ol style="display: inline-block; float: left;">
     <!-- initial -->
     <li>P({{ a }}) = {{ v['a'] }}</li>
     <li>P({{ b }}|{{ a }}) = {{ v['b_given_a'] }}</li>
@@ -29,20 +33,27 @@
     <li>P({{ b }}`|{{ a }}) = 1 - P({{ b }}|{{ a }}) =  {{ v['not_b_given_a'] }}</li>
     <li>P({{ b }}`|{{ a }}`) = 1 - P({{ b }}|{{ a }}`) =  {{ v['not_b_given_not_a'] }}</li>
     <!-- and  -->
-    <li>P({{ b }}|{{ a }}) *   P({{ a }})  = P({{ b }} and {{ a }})  = {{ v['b_and_a'] }}</li>
-    <li>P({{ b }}`|{{ a }}) *  P({{ a }})  = P({{ b }}` and {{ a }}) = {{ v['not_b_and_a'] }}</li>
-    <li>P({{ b }}|{{ a }}`) *  P({{ a }}`) = P({{ b }} and {{ a }}`) = {{ v['b_and_not_a'] }}</li>
-    <li>P({{ b }}`|{{ a }}`) * P({{ a }}`) = P({{ b }}` and {{ a }}`)= {{ v['not_b_and_not_a'] }}</li>
+    <li>P({{ b }} and {{ a }}) = P({{ b }}|{{ a }}) *   P({{ a }}) = {{ v['b_and_a'] }}</li>
+    <li>P({{ b }}` and {{ a }}) = P({{ b }}`|{{ a }}) *  P({{ a }}) = {{ v['not_b_and_a'] }}</li>
+    <li>P({{ b }} and {{ a }}`) = P({{ b }}|{{ a }}`) *  P({{ a }}`) = {{ v['b_and_not_a'] }}</li>
+    <li>P({{ b }}` and {{ a }}`) = P({{ b }}`|{{ a }}`) * P({{ a }}`) = {{ v['not_b_and_not_a'] }}</li>
 
     <!-- b -->
-    <li>P({{ b }} = P({{ b }}|{{ a }}) *   P({{ a }}) + P({{ b }}|{{ a }}`) *  P({{ a }}`) = P({{ b }} and {{ a }}) + P({{ b }} and {{ a }}`) = {{ v['b']}} </li>
+    <li>P({{ b }}) = ({{ b }} and {{ a }}) + P({{ b }} and {{ a }}`) = {{ v['b']}} </li>
 
     <!-- final values -->
     <li>P({{ a }}|{{ b }}) = P({{ b }} and {{ a }}) / P({{ b }})     = {{ v['a_given_b'] }}</li>
     <li>P({{ a }}|{{ b }}`) = P({{ b }}` and {{ a }}) / P({{ b }}`)  = {{ v['a_given_not_b'] }}</li>
     <li>P({{ a }}`|{{ b }}) = P({{ b }} and {{ a }}`) / P({{ b }})   = {{ v['not_a_given_b'] }}</li>
     <li>P({{ a }}`|{{ b }}`) = P({{ b }}` and {{ a }}`) / P({{ b }}`)= {{ v['not_a_given_not_b'] }}</li>
+    <li>P({{ b }} or {{ a }}) = P({{ b }}) + P({{ a }}) - P({{ b }}) and P({{ a }})</li>
 </ol>
+<p>All P({{ b }}^{{ a }}) variants are relative to the box </p>
+<p>All P({{ b }}|{{ a }}) variants are relative to P({{ a }}) or ({{ a }}`)</p>
+<a id="download" download="triangle.png">
+    <button type="button" onClick="download()">Download Graph</button>
+    </a>
+</div>
 
 {% endif %}
 {% endblock %}
