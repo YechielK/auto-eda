@@ -171,5 +171,11 @@ def calculate():
     #     return render_template('bayes.html', foobar=values)
 
 
+@app.route('/chessboard_code', methods=['GET', 'POST'])
+def chessboard_code():
+    if request.method == 'GET':
+        return render_template('chessboard.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

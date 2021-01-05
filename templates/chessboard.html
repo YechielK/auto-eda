@@ -1,0 +1,428 @@
+{% extends "layout.html" %}
+{% block content %}
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3; " ></canvas>
+<button onclick="clear_board(length)">Clear</button>
+<button onclick="random_board()">Random</button>
+<input type="text" id="text" value="43">
+<button onclick="result()">Target</button>
+<p id="ans"></p>
+<script>
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+length = c.width / 1.44
+square_length = length/8
+
+
+
+window.onload = draw_board(length)
+function draw_board(length) {
+  for (let i = 0; i <= length; i+= length/8) {
+  
+  ctx.beginPath();
+  ctx.moveTo(i, 0);
+  ctx.lineTo(i, length);
+
+  ctx.stroke();
+}
+
+for (let i = 0; i <= length; i+= length/8) {
+
+ctx.beginPath();
+ctx.moveTo(0, i);
+ctx.lineTo(length, i);
+
+ctx.stroke();
+}
+}
+
+
+
+// ctx.beginPath();
+// ctx.rect(0, 0, length, length);
+// ctx.stroke();
+
+
+
+
+ctx.beginPath();
+ctx.moveTo(length/2, 0);
+ctx.lineTo(length/2, length);
+
+ctx.stroke();
+// console.log(Math.floor(Math.random() * Math.floor(2)))
+
+dict = []
+for (let i = 0; i < 64; i++) {
+  dict[i] = Math.floor(Math.random() * Math.floor(2))
+  // Math.floor(Math.random() * Math.floor(2))
+  
+}
+for (let i = 0; i < 64; i++) {
+  if (dict[i] == 1) {
+    x = i%8
+    y = Math.floor(i/8)
+    draw_target(x,y,square_length)
+  }
+  // console.log(i%8 , Math.floor(i/8) )
+}
+console.log(dict)
+
+// for code
+c.addEventListener('click', (e) => {
+  const pos = {
+    x: e.clientX,
+    y: e.clientY
+    
+  };
+console.log(pos)
+// draw_board(length)
+var rect = c.getBoundingClientRect();
+// console.log(rect.top, rect.right, rect.bottom, rect.left);
+x_offset = rect.left
+y_offset = rect.top
+
+
+x = Math.floor((pos.x - x_offset)/(length/8))
+y = Math.floor((pos.y - y_offset)/(length/8))
+t = (x + 1) + ((y) * 8)
+t = t-1
+console.log(t)
+console.log(x,y)
+
+if (t == 0 || t > 63) {
+  
+} else if (dict[t] == 1) {
+  dict[t] = 0
+} else {
+  dict[t] = 1
+}
+
+
+ctx.clearRect(0, 0, c.width, c.height);
+draw_board(length)
+for (let i = 0; i < 64; i++) {
+  if (dict[i] == 1) {
+    x = i%8
+    y = Math.floor(i/8)
+    draw_target(x,y,square_length)
+  }
+  // console.log(i%8 , Math.floor(i/8) )
+}
+// draw_target(x,y, square_length, ctx);
+console.log(num_to_binary(t))
+console.log(dict)
+
+sum = 0
+  //first cols
+
+// for (let i = 0; i < 4; i++) {
+//   sum += col_sum(dict, i*2)
+// }
+// console.log(sum)
+
+// sum = 0
+
+
+
+
+col_zero = 0
+col_zero += col_sum(dict, 0)
+col_zero += col_sum(dict, 2)
+col_zero += col_sum(dict, 4)
+col_zero += col_sum(dict, 6)
+col_one = 0
+col_one += col_sum(dict, 0)
+col_one += col_sum(dict, 1)
+col_one += col_sum(dict, 4)
+col_one += col_sum(dict, 5)
+col_two = 0
+col_two += col_sum(dict, 0)
+col_two += col_sum(dict, 1)
+col_two += col_sum(dict, 2)
+col_two += col_sum(dict, 3)
+
+
+
+row_three = 0
+row_three += row_sum(dict, 0)
+row_three += row_sum(dict, 2)
+row_three += row_sum(dict, 4)
+row_three += row_sum(dict, 6)
+row_four = 0
+row_four += row_sum(dict, 0)
+row_four += row_sum(dict, 1)
+row_four += row_sum(dict, 4)
+row_four += row_sum(dict, 5)
+row_five = 0
+row_five += row_sum(dict, 0)
+row_five += row_sum(dict, 1)
+row_five += row_sum(dict, 2)
+row_five += row_sum(dict, 3)
+
+
+
+// console.log(col_zero%2)
+//   console.log(col_one%2)
+//   console.log(col_two%2)
+//   console.log(row_three%2)
+//   console.log(row_four%2)
+//   console.log(row_five%2)
+
+// console.log(
+// dict.reduce((a, b) => a + b, 0)%2
+// )
+if (dict.reduce((a, b) => a + b, 0)%2 == 0) {
+
+  str = ''
+  str += col_zero%2
+  str += col_one%2
+  str += col_two%2
+  str += row_three%2
+  str += row_four%2
+  str += row_five%2
+  // console.log(col_zero%2)
+  // console.log(col_one%2)
+  // console.log(col_two%2)
+  // console.log(row_three%2)
+  // console.log(row_four%2)
+  // console.log(row_five%2)
+} else {
+  str = ''
+  str += ((col_zero%2)+1)%2
+  str += ((col_one%2)+1)%2
+  str += ((col_two%2)+1)%2
+  str += ((row_three%2)+1)%2
+  str += ((row_four%2)+1)%2
+  str += ((row_five%2)+1)%2
+    // console.log(((col_zero%2)+1)%2)
+    // console.log(((col_one%2)+1)%2)
+    // console.log(((col_two%2)+1)%2)
+    // console.log(((row_three%2)+1)%2)
+    // console.log(((row_four%2)+1)%2)
+    // console.log(((row_five%2)+1)%2)
+}
+
+
+
+board = str.split("").reverse().join("")
+console.log(board)
+
+
+// target_bin = '101011'
+
+
+
+var target_dec = document.getElementById("text").value.toString();
+
+console.log(target_dec)
+target_bin = num_to_binary(parseInt(target_dec))
+target_bin = padding(target_bin)
+console.log('bin ' + target_bin)
+
+
+flip_bin = flip(board,target_bin)
+console.log(flip_bin)
+flip_dec = parseInt(flip_bin, 2)
+console.log(flip_dec)
+
+document.getElementById("ans").innerHTML ="Flip " + flip_dec;
+
+// var target_dec = document.getElementById("text").value.toString();
+// target_dec -= 1
+// console.log(target_dec)
+// target_bin = num_to_binary(parseInt(target_dec))
+// target_bin = padding(target_bin)
+// console.log('bin ' + target_bin)
+// console.log(num_to_binary(target_dec))
+
+
+});
+
+function padding(binary) {
+  while(binary.length < 6) {
+    binary = '0' + binary
+  }
+  return binary
+}
+
+function result() {
+  var x = document.getElementById("text").value;
+  console.log('res ' + x)
+}
+
+function flip(board, target) {
+  ans = ''
+  for (let i = 0; i < target.length; i++) {
+    if (board[i] == target[i]) {
+      ans += '0'
+    } else {
+      ans += '1'
+    }
+    
+  }
+  return ans
+}
+
+function clear_dict(dict) {
+  for (let i = 0; i < 64; i++) {
+    dict[i] = 0
+  }
+}
+
+function clear_board(length) {
+  clear_dict(dict)
+  ctx.clearRect(0, 0, c.width, c.height)
+  draw_board(length)
+}
+
+function random_board() {
+  clear_board(length)
+
+  for (let i = 0; i < 64; i++) {
+  dict[i] = Math.floor(Math.random() * Math.floor(2))
+  // Math.floor(Math.random() * Math.floor(2))
+}
+
+
+
+
+
+  for (let i = 0; i < 64; i++) {
+  if (dict[i] == 0) {
+    x = i%8
+    y = Math.floor(i/8)
+    draw_target(x,y,square_length)
+  }
+}
+}
+function row_sum(dict, s) {
+  sum = 0
+  for (let i = 0; i < 8; i++) {
+    sum += dict[(s*8) + i]
+  }
+  return sum
+}
+
+function col_sum(dict, s) {
+  sum = 0
+  for (let i = s; i < 64; i+=8) {
+  //first cols
+  sum += dict[i]
+  }
+  return sum
+}
+
+// for target
+// c.addEventListener('click', (e) => {
+//   const pos = {
+//     x: e.clientX,
+//     y: e.clientY
+    
+//   };
+// console.log(pos)
+// // draw_board(length)
+// var rect = c.getBoundingClientRect();
+// console.log(rect.top, rect.right, rect.bottom, rect.left);
+// x_offset = rect.left
+// y_offset = rect.top
+
+
+// x = Math.floor((pos.x - x_offset)/(length/8))
+// y = Math.floor((pos.y - y_offset)/(length/8))
+
+// t = (x + 1) + ((y) * 8)
+// console.log(x,y)
+
+// ctx.clearRect(0, 0, c.width, c.height);
+// draw_board(length)
+// draw_target(x,y, square_length, ctx);
+// console.log(t)
+// console.log(num_to_binary(t))
+// // draw_outline(x*square_length,y*square_length,square_length)
+// });
+
+
+
+function num_to_binary(int) {
+  x = int.toString(2)
+  return x
+}
+
+function draw_outline(x, y, l) {
+  ctx.strokeStyle = "#FF0000";
+  console.log(x,y)
+  console.log(x+l,y+l)
+  ctx.strokeRect(x, y, x , y );
+
+}
+function draw_target(x, y, l) {
+
+
+    ctx.font = "50px Arial";
+    ctx.fillText("H", x*l, (y+1)*l);
+}
+
+
+
+function draw_square(v, a, b) {
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height);
+    // console.log(c)
+    length = c.width / 1.44
+    m = 10
+    x = length/5
+    y = length/5
+    origin = 0
+    circle_size = .2
+
+    ctx.beginPath();
+    ctx.rect(x, y, length, length);
+    ctx.stroke();
+
+    var givens = ['a', 'not_a', 'b_given_not_a', 'not_b_given_not_a', 'b_given_a', 'not_b_given_a']
+    var ands = ['b_and_a', 'not_b_and_a', 'b_and_not_a', 'not_b_and_not_a']
+
+    // P(A) and P(A`)
+    ctx.beginPath();
+    ctx.moveTo(x + (length * v['a']), y);
+    ctx.lineTo(x + (length * v['a']), y + length);
+    ctx.stroke();
+
+    // P(B|A) and P(B`|A)
+    ctx.beginPath();
+    ctx.moveTo(x, y + (length *  v['b_given_a'] ));
+    ctx.lineTo(x + (length * v['a']), y +  (length * v['b_given_a']));
+    ctx.stroke();
+
+    // P(B|A`) and P(B`|A`)
+    ctx.beginPath();
+    ctx.moveTo(x + (length * v['a'] ), y + (length * v['b_given_not_a'] ));
+    ctx.lineTo(x + length, y +  (length * v['b_given_not_a'] ));
+    ctx.stroke();
+
+    for (let i = 0; i < givens.length; i++) {
+        draw_triangle(x, y, length, givens[i], v[givens[i]] , ctx, a, b)   
+    }
+
+    for (let i = 0; i < ands.length; i++) {
+        draw_line(x, y, length, ands[i], v[ands[i]], ctx, a, b)
+    }
+
+    // TODO
+    // Fix ration of amount of circles so lines that cut through are
+    //circles
+    for (let i = x + length/(2 * m); i <x + length; i+=length/(1 * m)) {
+        for (let j = y + length/(2 * m); j <y + length; j+=length/(1 * m)) {
+            ctx.beginPath();
+            ctx.arc(j, i, length/(2 * m) * circle_size, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+    }
+}
+</script>
+
+
+{% endblock %}
